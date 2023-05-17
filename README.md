@@ -7,4 +7,4 @@ Documentation is available in [Wiki](https://github.com/TIOJ-INFOR-Online-Judge/
 
 ## Get Started
 
-See [Wiki](https://github.com/TIOJ-INFOR-Online-Judge/tioj/wiki/Get-Started) for instructions to install TIOJ.
+See [Wiki](https://github.com/giver139/tioj/wiki/Get-Started) for instructions to install TIOJ.
