@@ -148,8 +148,8 @@ rvm use 3.3.7
 
 # Clone git repos
 cd "$WORKDIR"
-git clone https://github.com/giver139/tioj.git
-git clone https://github.com/giver139/tioj-judge.git
+git clone -b dev https://github.com/giver139/tioj.git
+git clone -b dev https://github.com/giver139/tioj-judge.git
 
 # Solve MariaDB incompatibility in Arch
 if [[ "$DIST" == 'Arch' ]]; then
