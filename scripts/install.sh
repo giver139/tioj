@@ -88,7 +88,7 @@ elif grep -q 'Arch Linux' /etc/*-release; then
   # build libseccomp, libnl, openssl, sqlite, libbsd, libzstd with static libs
   mkdir -p "$WORKDIR/build"
   cd "$WORKDIR/build"
-  mkdir -p libseccomp libnl openssl gmp sqlite libbsd zstd libffi numactl
+  mkdir -p libseccomp libnl openssl gmp sqlite libbsd zstd libffi numactl python2
   cd libseccomp
   curl -O https://gitlab.archlinux.org/archlinux/packaging/packages/libseccomp/-/raw/main/PKGBUILD
   sed -i "s/^makedepends.*$/options=('staticlibs' !'lto')\n\0/" PKGBUILD
@@ -129,6 +129,10 @@ elif grep -q 'Arch Linux' /etc/*-release; then
   cd ../numactl
   curl -O https://gitlab.archlinux.org/archlinux/packaging/packages/numactl/-/raw/main/PKGBUILD
   sed -i "s/^depends.*$/options=('staticlibs' !'lto')\n\0/" PKGBUILD
+  makepkg -si --skippgpcheck --nocheck --noconfirm
+  cd ../python2
+  curl -O 'https://aur.archlinux.org/cgit/aur.git/plain/PKGBUILD?h=python2'
+  curl -O 'https://aur.archlinux.org/cgit/aur.git/plain/mtime-workaround.patch?h=python2'
   makepkg -si --skippgpcheck --nocheck --noconfirm
 
   # Setup mysql
