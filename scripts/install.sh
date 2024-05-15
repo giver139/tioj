@@ -88,7 +88,7 @@ elif grep -q 'Arch Linux' /etc/*-release; then
   # build libseccomp, libnl, openssl, sqlite, libbsd, libzstd with static libs
   mkdir -p "$WORKDIR/build"
   cd "$WORKDIR/build"
-  mkdir -p libseccomp libnl openssl sqlite libbsd zstd
+  mkdir -p libseccomp libnl openssl gmp sqlite libbsd zstd
   cd libseccomp
   curl -O https://gitlab.archlinux.org/archlinux/packaging/packages/libseccomp/-/raw/main/PKGBUILD
   sed -i "s/^makedepends.*$/options=('staticlibs' !'lto')\n\0/" PKGBUILD
@@ -102,6 +102,11 @@ elif grep -q 'Arch Linux' /etc/*-release; then
   curl -O https://gitlab.archlinux.org/archlinux/packaging/packages/openssl/-/raw/main/PKGBUILD
   curl -O https://gitlab.archlinux.org/archlinux/packaging/packages/openssl/-/raw/main/ca-dir.patch
   sed -i "s/^makedepends.*$/options=('staticlibs' !'lto')\n\0/" PKGBUILD
+  makepkg -si --skippgpcheck --nocheck --noconfirm
+  cd ../gmp
+  curl -O https://gitlab.archlinux.org/archlinux/packaging/packages/gmp/-/raw/main/PKGBUILD
+  curl -O https://gitlab.archlinux.org/archlinux/packaging/packages/gmp/-/raw/main/gmp-gcc-15.patch
+  sed -i "s/^depends.*$/options=('staticlibs' !'lto')\n\0/" PKGBUILD
   makepkg -si --skippgpcheck --nocheck --noconfirm
   cd ../sqlite
   for i in PKGBUILD license.txt sqlite-lemon-system-template.patch; do
