@@ -79,7 +79,7 @@ elif grep -q 'Arch Linux' /etc/*-release; then
   DIST=Arch
   sudo pacman -Syu --noconfirm --needed \
       base-devel git mariadb imagemagick nodejs yarn redis libyaml \
-      cmake ninja boost ghc python-numpy python-pillow
+      cmake ninja boost ghc ghc-static python-numpy python-pillow
   sudo mariadb-install-db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
   sudo systemctl enable mysql
   sudo systemctl start mysql
@@ -88,7 +88,7 @@ elif grep -q 'Arch Linux' /etc/*-release; then
   # build libseccomp, libnl, openssl, sqlite, libbsd, libzstd with static libs
   mkdir -p "$WORKDIR/build"
   cd "$WORKDIR/build"
-  mkdir -p libseccomp libnl openssl gmp sqlite libbsd zstd
+  mkdir -p libseccomp libnl openssl gmp sqlite libbsd zstd libffi numactl
   cd libseccomp
   curl -O https://gitlab.archlinux.org/archlinux/packaging/packages/libseccomp/-/raw/main/PKGBUILD
   sed -i "s/^makedepends.*$/options=('staticlibs' !'lto')\n\0/" PKGBUILD
@@ -121,6 +121,14 @@ elif grep -q 'Arch Linux' /etc/*-release; then
   cd ../zstd
   curl -O https://gitlab.archlinux.org/archlinux/packaging/packages/zstd/-/raw/main/PKGBUILD
   sed -i "s/makedepends.*$/options=('staticlibs' !'lto')\n\0/; /-DZSTD_BUILD_STATIC=OFF/ d" PKGBUILD
+  makepkg -si --skippgpcheck --nocheck --noconfirm
+  cd ../libffi
+  curl -O https://gitlab.archlinux.org/archlinux/packaging/packages/libffi/-/raw/main/PKGBUILD
+  sed -i "s/^depends.*$/options=('staticlibs' !'lto')\n\0/; /disable-static/ d" PKGBUILD
+  makepkg -si --skippgpcheck --nocheck --noconfirm
+  cd ../numactl
+  curl -O https://gitlab.archlinux.org/archlinux/packaging/packages/numactl/-/raw/main/PKGBUILD
+  sed -i "s/^depends.*$/options=('staticlibs' !'lto')\n\0/" PKGBUILD
   makepkg -si --skippgpcheck --nocheck --noconfirm
 
   # Setup mysql
